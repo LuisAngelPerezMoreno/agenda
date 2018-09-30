@@ -1,24 +1,25 @@
 import { Component } from '@angular/core';
 
 import { User } from './models/user';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ UserService ]
 })
 export class AppComponent {
 
   accion = 'Nuevo';
   editar = false;
 
-  userArray: User[] = [
-    {id: 1, nombre: "Jose", telefono: 5512345678},
-    {id: 1, nombre: "Luis", telefono: 5587654321},
-    {id: 1, nombre: "Angel", telefono: 5518273645}
-  ];
+  constructor(private _userService: UserService) { }
+
+  userArray: User[] = this._userService.getUsers();
 
   selectedUser: User = new User();
+
 
   save() {
     if (!this.editar) {
