@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import { User } from './models/user';
 import { UserService } from './services/user.service';
+import {Post} from './models/post';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { UserService } from './services/user.service';
   styleUrls: ['./app.component.css'],
   providers: [ UserService ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   accion = 'Nuevo';
   editar = false;
@@ -18,8 +19,14 @@ export class AppComponent {
 
   userArray: User[] = this._userService.getUsers();
 
+  public postArray = [];
+
   selectedUser: User = new User();
 
+  ngOnInit() {
+    this._userService.getArticulos()
+                      .subscribe((data) => this.postArray = data);
+  }
 
   save() {
     if (!this.editar) {
