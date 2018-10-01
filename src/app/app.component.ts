@@ -17,25 +17,40 @@ export class AppComponent implements OnInit {
 
   constructor(private _userService: UserService) { }
 
-  userArray: User[] = this._userService.getUsers();
+  userArray: User[];
 
-  public postArray = [];
+  // public userArray = [];
+  //
+  // public postArray = [];
 
   selectedUser: User = new User();
 
   ngOnInit() {
-    this._userService.getArticulos()
-                      .subscribe((data) => this.postArray = data);
+    this._userService.getAllUsers()
+                      .subscribe((data) => this.userArray = data);
   }
 
   save() {
     if (!this.editar) {
-      this.selectedUser.id = this.userArray.length + 1;
-      this.userArray.push(this.selectedUser);
+      // this.selectedUser.id = this.userArray.length + 1;
+      // this.userArray.push(this.selectedUser);
+      this._userService.createUser(this.selectedUser).subscribe(
+        response => {
+
+              this.ngOnInit();
+              this.selectedUser = new User();
+              this.accion = 'Nuevo';
+              this.editar = false;
+
+        },
+        error => {
+          console.log(<any>error);
+        }
+      );
     }
-    this.selectedUser = new User();
-    this.accion = 'Nuevo';
-    this.editar = false;
+    // this.selectedUser = new User();
+    // this.accion = 'Nuevo';
+    // this.editar = false;
   }
 
   select(user) {
