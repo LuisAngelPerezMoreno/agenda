@@ -32,8 +32,6 @@ export class AppComponent implements OnInit {
 
   save() {
     if (!this.editar) {
-      // this.selectedUser.id = this.userArray.length + 1;
-      // this.userArray.push(this.selectedUser);
       this._userService.createUser(this.selectedUser).subscribe(
         response => {
 
@@ -47,10 +45,21 @@ export class AppComponent implements OnInit {
           console.log(<any>error);
         }
       );
+    } else {
+      this._userService.updateUser(this.selectedUser).subscribe(
+        response => {
+
+          this.ngOnInit();
+          this.selectedUser = new User();
+          this.accion = 'Nuevo';
+          this.editar = false;
+
+        },
+        error => {
+          console.log(<any>error);
+        }
+      );
     }
-    // this.selectedUser = new User();
-    // this.accion = 'Nuevo';
-    // this.editar = false;
   }
 
   select(user) {
@@ -60,11 +69,23 @@ export class AppComponent implements OnInit {
   }
 
   delete(user) {
-    this.userArray = this.userArray.filter( x => x != user );
-    this.selectedUser = new User();
+    this._userService.deleteUser(user).subscribe(
+      response => {
+
+        this.ngOnInit();
+        this.selectedUser = new User();
+        this.accion = 'Nuevo';
+        this.editar = false;
+
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
   }
 
   cancel() {
+    this.ngOnInit();
     this.selectedUser = new User();
     this.accion = 'Nuevo';
     this.editar = false;

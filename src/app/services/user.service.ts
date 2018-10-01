@@ -19,4 +19,14 @@ export class UserService {
     const headers = new HttpHeaders().set('Content-Type','application/json');
     return this.http.post<User[]>(this._url + '/users', user, {headers: headers});
   }
+
+  updateUser(user: User): Observable<User[]> {
+    const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.put<User[]>(this._url + '/users/' + user.id, user, {headers: headers});
+  }
+
+  deleteUser(user: User): Observable<User[]> {
+    const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.delete<User[]>(this._url + '/users/' + user.id, {headers: headers});
+  }
 }
